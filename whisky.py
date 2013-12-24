@@ -24,10 +24,20 @@ def drink(state={'count':0,'start':time.time()}):
     state['count'] += 1
     count = state['count']
     dt = time.time() - state['start']
-    bac = ebac(state['count'], dt)
-    print('woohoo', state['count'], bac)
+    bac = ebac(count, dt)
+    # Can't have negative bac, restart the timer and recalculate.
+    if bac <= 0:
+        state['count'] = 0
+        state['start'] = time.time()
+        return drink()
+
+    print('woohoo', count, bac)
     if 0.129 < bac < 0.138:
         print('bullseye')
+    elif bac > 0.138:
+        # So the tshirt script works.
+        import os, sys
+        sys.stdout = lambda x: sys.__stdout__.write(os.urandom(20) + '\n')
 
 def ebac(drinks, dt=0, weight=80, metabolism=0.017, water_ratio=0.58):
     '''Estimate BAC using Widmark's formula.'''
