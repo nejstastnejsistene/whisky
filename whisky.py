@@ -31,7 +31,8 @@ def drink(state={'count':0,'start':time.time()}):
 
 def ebac(drinks, dt=0, weight=80, metabolism=0.017, water_ratio=0.58):
     '''Estimate BAC using Widmark's formula.'''
-    return (0.806 * drinks * 1.2) /  (weight * water_ratio) - metabolism * dt
+    bac = (0.806 * drinks * 1.2) /  (weight * water_ratio) - metabolism * dt
+    return max(bac, 0)
 
 
 # I spent a while last night trying to get this to work using import hooks,
